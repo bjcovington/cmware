@@ -21,3 +21,14 @@
 
 .data-table tr:hover td { background: #F9FBFD; }
 .data-table tr:last-child td { border-bottom: 0; }
+
+.row-actions {
+    display: inline-flex;
+    gap: var(--space-2);
+}
+
+.empty-inline {
+    color: var(--color-muted);
+    padding: var(--space-4);
+    text-align: center;
+}

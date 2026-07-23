@@ -1,4 +1,4 @@
-const CACHE_NAME = "construction-manager-v1";
+const CACHE_NAME = "cmware-v2";
 
 const APP_SHELL = [
     "./",
@@ -19,6 +19,7 @@ const APP_SHELL = [
     "./js/app.js",
     "./js/router.js",
     "./js/store.js",
+    "./js/recordStore.js",
     "./js/database.js",
     "./js/config.js",
     "./js/constants.js",
@@ -42,13 +43,22 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
     if (event.request.method !== "GET") return;
 
+    if (event.request.mode === "navigate") {
+        event.respondWith(
+            fetch(event.request).catch(() => caches.match("./index.html"))
+        );
+        return;
+    }
+
     event.respondWith(
-        caches.match(event.request).then((cached) => {
-            if (cached) return cached;
-            return fetch(event.request).then((response) => {
-                const copy = response.clone();
-                caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-                return response;
+        fetch(event.request).then((response) => {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+            return response;
+        }).catch(() => {
+            return caches.match(event.request).then((cached) => {
+                if (cached) return cached;
+                return caches.match("./index.html");
             });
         })
     );

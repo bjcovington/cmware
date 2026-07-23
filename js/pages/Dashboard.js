@@ -1,9 +1,11 @@
-import { activity, deadlines, metrics } from "../database.js";
+import { activity, deadlines } from "../database.js";
+import { recordStore } from "../recordStore.js";
 import { Button } from "../components/Button.js";
 import { Card, MetricCard } from "../components/Card.js";
 
 export class Dashboard {
     render() {
+        const metrics = this.metrics();
         return `
             <section class="project-hero">
                 <div class="stack">
@@ -44,5 +46,41 @@ export class Dashboard {
     chart() {
         const bars = [44, 58, 42, 76, 63, 94, 71, 82, 66, 88];
         return `<div class="chart-placeholder" aria-label="Placeholder bar chart">${bars.map((bar) => `<span style="height:${bar}%"></span>`).join("")}</div>`;
+    }
+
+    metrics() {
+        const records = recordStore.all();
+        const rfis = records.filter((record) => record.module === "rfis");
+        const submittals = records.filter((record) => record.module === "submittals");
+        const changes = records.filter((record) => ["change-events", "change-orders", "proposal-requests", "ccds"].includes(record.module));
+        const approvedCost = records
+            .filter((record) => record.status === "Approved")
+            .reduce((total, record) => total + Number(record.cost || 0), 0);
+        const pendingCost = records
+            .filter((record) => ["Open", "Pricing", "Submitted", "In Review"].includes(record.status))
+            .reduce((total, record) => total + Number(record.cost || 0), 0);
+
+        return [
+            ["Open RFIs", rfis.filter((record) => record.status !== "Closed").length, "Active questions", "warn"],
+            ["Closed RFIs", rfis.filter((record) => record.status === "Closed").length, "Resolved items", "good"],
+            ["Open Submittals", submittals.filter((record) => record.status !== "Closed").length, "In workflow", "warn"],
+            ["Returned Submittals", submittals.filter((record) => record.status === "Revise and Resubmit").length, "Need resubmission", "bad"],
+            ["Pending Changes", changes.filter((record) => record.status !== "Approved" && record.status !== "Closed").length, "Needs action", "warn"],
+            ["Approved CO Value", this.money(approvedCost), "Approved impacts", "good"],
+            ["Pending CO Value", this.money(pendingCost), "Potential exposure", "warn"],
+            ["Engineer Response", "6.2d", "Avg RFI response", "good"],
+            ["Submittal Review", "8.5d", "Avg review cycle", "warn"],
+            ["Contract Value", "$48.25M", "Base plus approved", "neutral"],
+            ["Budget Remaining", "$6.7M", "14% available", "good"]
+        ];
+    }
+
+    money(value) {
+        return new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+            maximumFractionDigits: 0,
+            notation: value >= 1000000 ? "compact" : "standard"
+        }).format(value);
     }
 }

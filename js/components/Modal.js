@@ -35,6 +35,9 @@ export class Modal {
                 document.dispatchEvent(new CustomEvent("toast", { detail: action.dataset.toast }));
                 this.close();
             }
+            if (event.target.closest('a[href^="#/"]')) {
+                this.close();
+            }
         });
     }
 

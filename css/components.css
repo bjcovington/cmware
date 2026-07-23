@@ -158,3 +158,31 @@
     padding: var(--space-6);
     text-align: center;
 }
+
+.register-tools {
+    align-items: center;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: minmax(220px, 1fr) auto;
+    padding: var(--space-4);
+}
+
+.record-summary {
+    align-items: baseline;
+    background: var(--color-surface-alt);
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    gap: var(--space-2);
+    justify-content: center;
+    min-width: 112px;
+    padding: var(--space-3);
+}
+
+.record-summary strong {
+    color: var(--color-primary);
+    font-size: 1.35rem;
+}
+
+@media (max-width: 640px) {
+    .register-tools { grid-template-columns: 1fr; }
+}

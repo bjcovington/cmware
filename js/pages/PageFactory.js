@@ -29,12 +29,13 @@ function escapeHtml(value) {
 }
 
 export class PageFactory {
-    constructor({ title, subtitle, icon = "folder-kanban", actions = ["New", "Export"], moduleKey, prefix }) {
+    constructor({ title, subtitle, icon = "folder-kanban", actions = ["New", "Export"], moduleKey, routePath, prefix }) {
         this.title = title;
         this.subtitle = subtitle;
         this.icon = icon;
         this.actions = actions;
         this.moduleKey = moduleKey || toModuleKey(title);
+        this.routePath = routePath || this.moduleKey;
         this.prefix = prefix || toPrefix(title);
     }
 
@@ -111,7 +112,7 @@ export class PageFactory {
             }
         });
 
-        main.addEventListener("click", (event) => {
+        main.onclick = (event) => {
             const button = event.target.closest("[data-action]");
             if (!button) return;
 
@@ -128,13 +129,18 @@ export class PageFactory {
                 document.dispatchEvent(new CustomEvent("toast", { detail: "Record deleted" }));
                 this.refresh(params);
             }
-        });
+        };
     }
 
     openCreateForm() {
+        const singularTitle = this.title.endsWith("ies")
+            ? `${this.title.slice(0, -3)}y`
+            : this.title.endsWith("s")
+                ? this.title.slice(0, -1)
+                : this.title;
         document.dispatchEvent(new CustomEvent("open-modal", {
             detail: {
-                title: `New ${this.title.slice(0, -1) || this.title}`,
+                title: `New ${singularTitle}`,
                 body: this.formMarkup(),
                 onSubmit: (values) => {
                     const record = recordStore.create(this.moduleKey, values, this.prefix);
@@ -218,8 +224,8 @@ export class PageFactory {
     }
 
     refresh(params) {
-        const hash = location.hash || `#/${this.moduleKey}`;
-        location.hash = hash.includes("?") ? hash : `#/${this.moduleKey}`;
+        const hash = location.hash || `#/${this.routePath}`;
+        location.hash = hash.includes("?") ? hash : `#/${this.routePath}`;
         document.getElementById("app-main").innerHTML = this.render({ params });
         this.bind({ params });
         window.lucide?.createIcons();
