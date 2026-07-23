@@ -1,0 +1,19 @@
+body.dark {
+    color-scheme: dark;
+    --color-bg: #07192C;
+    --color-surface: #0E2741;
+    --color-surface-alt: #12375D;
+    --color-sidebar: #0A2138;
+    --color-text: #F5F7FA;
+    --color-muted: #A8B4C6;
+    --color-border: #2C3A50;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.22);
+    --shadow-md: 0 16px 34px rgba(0, 0, 0, 0.34);
+}
+
+body.dark .topbar { background: rgba(7, 25, 44, 0.92); }
+body.dark .project-hero { background: linear-gradient(135deg, #0E2741 0%, #12375D 100%); }
+body.dark .health-panel { background: rgba(255, 255, 255, 0.06); }
+body.dark .progress-ring::after { background: #0E2741; }
+body.dark .data-table tr:hover td { background: #1C2739; }
+body.dark .weather-panel { background: #17283A; border-color: #2C4A68; }

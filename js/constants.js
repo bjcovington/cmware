@@ -1,0 +1,21 @@
+export const APP_NAME = "cmware";
+
+export const STORAGE_KEYS = {
+    sidebar: "cm.sidebarCollapsed",
+    theme: "cm.theme",
+    project: "cm.selectedProject",
+    records: "cmware.records"
+};
+
+export const STATUS_BADGES = {
+    Open: "warning",
+    "In Review": "info",
+    Pricing: "danger",
+    Approved: "success",
+    Issued: "neutral",
+    Closed: "success",
+    Draft: "neutral",
+    Submitted: "info",
+    "Revise and Resubmit": "danger",
+    "No Exceptions": "success"
+};
