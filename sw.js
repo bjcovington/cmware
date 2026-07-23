@@ -1,4 +1,4 @@
-const CACHE_NAME = "cmware-v2";
+const CACHE_NAME = "cmware-v3";
 
 const APP_SHELL = [
     "./",
@@ -17,12 +17,20 @@ const APP_SHELL = [
     "./css/utilities.css",
     "./css/themes.css",
     "./js/app.js",
+    "./js/auth.js",
     "./js/router.js",
     "./js/store.js",
     "./js/recordStore.js",
     "./js/database.js",
     "./js/config.js",
     "./js/constants.js",
+    "./js/utils/PdfGenerator.js",
+    "./js/components/PeoplePickerModal.js",
+    "./js/components/RecordDetailModal.js",
+    "./js/pages/DailyLogs.js",
+    "./js/pages/Drawings.js",
+    "./js/pages/Financials.js",
+    "./js/pages/PunchList.js",
     "./icons/app-icon.svg"
 ];
 
