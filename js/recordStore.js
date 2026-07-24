@@ -8,6 +8,7 @@ import {
     punchList as seedPunchList
 } from "./database.js";
 import { STORAGE_KEYS } from "./constants.js";
+import { db } from "./db.js";
 
 const SUBCONTRACTS_KEY = "cmware_subcontracts";
 const SETTINGS_KEY = "cmware_settings";
@@ -81,6 +82,44 @@ function setStored(key, data, eventName = "records-changed") {
 }
 
 export const recordStore = {
+    // Initialization: migrate DB into localStorage for compatibility
+    async init() {
+        try {
+            await db.migrateFromLocalStorage(STORAGE_KEYS);
+
+            // pull records from DB and populate localStorage compatibility keys
+            const dbRecords = await db.getAll("records");
+            if (dbRecords && dbRecords.length) setStored(STORAGE_KEYS.records, dbRecords);
+
+            const dbContacts = await db.getAll("contacts");
+            if (dbContacts && dbContacts.length) localStorage.setItem(STORAGE_KEYS.directory, JSON.stringify(dbContacts));
+
+            const dbProjects = await db.getAll("projects");
+            if (dbProjects && dbProjects.length) localStorage.setItem(STORAGE_KEYS.projectInfo, JSON.stringify(dbProjects[0]));
+
+            const dbSettings = await db.getAll("settings");
+            if (dbSettings && dbSettings.length) localStorage.setItem(SETTINGS_KEY, JSON.stringify(dbSettings[0]));
+
+            const dbDaily = await db.getAll("dailyLogs");
+            if (dbDaily && dbDaily.length) localStorage.setItem(STORAGE_KEYS.dailyLogs, JSON.stringify(dbDaily));
+
+            const dbDrawings = await db.getAll("drawings");
+            if (dbDrawings && dbDrawings.length) localStorage.setItem(STORAGE_KEYS.drawings, JSON.stringify(dbDrawings));
+
+            const dbBudget = await db.getAll("budget");
+            if (dbBudget && dbBudget.length) localStorage.setItem(STORAGE_KEYS.budget, JSON.stringify(dbBudget));
+
+            const dbPunch = await db.getAll("punchList");
+            if (dbPunch && dbPunch.length) localStorage.setItem(STORAGE_KEYS.punchList, JSON.stringify(dbPunch));
+
+            const dbSubcontracts = await db.getAll("subcontracts");
+            if (dbSubcontracts && dbSubcontracts.length) localStorage.setItem(SUBCONTRACTS_KEY, JSON.stringify(dbSubcontracts));
+        } catch (err) {
+            // graceful fallback — keep existing localStorage
+            console.warn("recordStore.init migration error:", err);
+        }
+    },
+
     // ── General Records ────────────────────────────────────────────────────
     all() { return getStored(STORAGE_KEYS.records, seedRecords); },
 
@@ -148,9 +187,11 @@ export const recordStore = {
             manufacturer: values.manufacturer || "",
             leadTime: values.leadTime || "",
             attachments: [],
-            createdAt: new Date().toISOString().split("T")[0]
+            createdAt: new Date().toISOString()
         };
         setStored(STORAGE_KEYS.records, [record, ...all]);
+        // also persist to DB (best-effort)
+        try { db.put("records", record).catch(() => {}); } catch (e) { /* ignore */ }
         return record;
     },
 
@@ -163,6 +204,7 @@ export const recordStore = {
             r.id === id ? { ...r, ...fields, updatedAt: new Date().toISOString() } : r
         );
         setStored(STORAGE_KEYS.records, all);
+        try { db.put("records", all.find(r => r.id === id)).catch(() => {}); } catch (e) {}
     },
 
     addResponse(id, { officialAnswer, nextStatus, answeredBy }) {
@@ -176,13 +218,18 @@ export const recordStore = {
             return { ...r, officialAnswer, status: nextStatus || r.status, responseHistory: history };
         });
         setStored(STORAGE_KEYS.records, all);
+        try { db.put("records", all.find(r => r.id === id)).catch(() => {}); } catch (e) {}
     },
 
     updateStatus(id, status) {
         setStored(STORAGE_KEYS.records, this.all().map((r) => r.id === id ? { ...r, status } : r));
+        try {
+            const rec = this.all().find(r => r.id === id);
+            if (rec) db.put("records", { ...rec, status }).catch(() => {});
+        } catch (e) {}
     },
 
-    remove(id) { setStored(STORAGE_KEYS.records, this.all().filter((r) => r.id !== id)); },
+    remove(id) { setStored(STORAGE_KEYS.records, this.all().filter((r) => r.id !== id)); try { db.delete("records", id).catch(() => {}); } catch (e) {} },
 
     search(query) {
         const term = String(query || "").trim().toLowerCase();
@@ -194,7 +241,7 @@ export const recordStore = {
         );
     },
 
-    // ── Directory ──────────────────────────────────────────────────────────
+    // ── Directory ─────────────────────────────────────────────────────────
     getContacts() { return getStored(STORAGE_KEYS.directory, seedContacts); },
 
     addContact(contact) {
@@ -209,6 +256,7 @@ export const recordStore = {
             avatar: contact.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
         };
         setStored(STORAGE_KEYS.directory, [newC, ...all], "directory-changed");
+        try { db.put("contacts", newC).catch(() => {}); } catch (e) {}
         return newC;
     },
 
@@ -222,9 +270,10 @@ export const recordStore = {
     updateProjectInfo(info) {
         localStorage.setItem(STORAGE_KEYS.projectInfo, JSON.stringify(info));
         document.dispatchEvent(new CustomEvent("project-info-changed", { detail: info }));
+        try { db.put("projects", info).catch(() => {}); } catch (e) {}
     },
 
-    // ── Settings ───────────────────────────────────────────────────────────
+    // ── Settings ─────────────────────────────────────────────────────────
     getSettings() { return getStored(SETTINGS_KEY, DEFAULT_SETTINGS); },
 
     updateSettings(updates) {
@@ -232,10 +281,11 @@ export const recordStore = {
         const merged = { ...current, ...updates };
         localStorage.setItem(SETTINGS_KEY, JSON.stringify(merged));
         document.dispatchEvent(new CustomEvent("toast", { detail: "Settings saved." }));
+        try { db.put("settings", { id: "settings", ...merged }).catch(() => {}); } catch (e) {}
         return merged;
     },
 
-    // ── Daily Logs ─────────────────────────────────────────────────────────
+    // ── Daily Logs ────────────────────────────────────────────────────────
     getDailyLogs() { return getStored(STORAGE_KEYS.dailyLogs, seedDailyLogs); },
 
     addDailyLog(log) {
@@ -253,10 +303,11 @@ export const recordStore = {
             deliveries: log.deliveries || "None"
         };
         setStored(STORAGE_KEYS.dailyLogs, [newLog, ...this.getDailyLogs()], "dailylogs-changed");
+        try { db.put("dailyLogs", newLog).catch(() => {}); } catch (e) {}
         return newLog;
     },
 
-    // ── Drawings ───────────────────────────────────────────────────────────
+    // ── Drawings ─────────────────────────────────────────────────────────
     getDrawings() { return getStored(STORAGE_KEYS.drawings, seedDrawings); },
 
     addDrawing(dwg) {
@@ -270,6 +321,7 @@ export const recordStore = {
             description: dwg.description || ""
         };
         setStored(STORAGE_KEYS.drawings, [newD, ...this.getDrawings()], "drawings-changed");
+        try { db.put("drawings", newD).catch(() => {}); } catch (e) {}
         return newD;
     },
 
@@ -291,6 +343,7 @@ export const recordStore = {
             remainingBalance: orig - commit
         };
         setStored(STORAGE_KEYS.budget, [...all, newLine], "budget-changed");
+        try { db.put("budget", newLine).catch(() => {}); } catch (e) {}
     },
 
     updateBudgetLine(costCode, vals) {
@@ -313,6 +366,7 @@ export const recordStore = {
             };
         });
         setStored(STORAGE_KEYS.budget, all, "budget-changed");
+        try { db.put("budget", { id: costCode, ...all.find(b => b.costCode === costCode) }).catch(() => {}); } catch (e) {}
     },
 
     // ── Subcontracts ───────────────────────────────────────────────────────
@@ -333,6 +387,7 @@ export const recordStore = {
             contact: vals.contact || ""
         };
         setStored(SUBCONTRACTS_KEY, [newSC, ...all], "subcontracts-changed");
+        try { db.put("subcontracts", newSC).catch(() => {}); } catch (e) {}
         return newSC;
     },
 
@@ -341,9 +396,10 @@ export const recordStore = {
             sc.id === id ? { ...sc, ...vals, value: Number(vals.value || sc.value) } : sc
         );
         setStored(SUBCONTRACTS_KEY, all, "subcontracts-changed");
+        try { db.put("subcontracts", all.find(sc => sc.id === id)).catch(() => {}); } catch (e) {}
     },
 
-    // ── Punch List ─────────────────────────────────────────────────────────
+    // ── Punch List ────────────────────────────────────────────────────────
     getPunchList() { return getStored(STORAGE_KEYS.punchList, seedPunchList); },
 
     addPunchItem(item) {
@@ -361,6 +417,7 @@ export const recordStore = {
             description: item.description || ""
         };
         setStored(STORAGE_KEYS.punchList, [newItem, ...all], "punchlist-changed");
+        try { db.put("punchList", newItem).catch(() => {}); } catch (e) {}
         return newItem;
     }
 };
