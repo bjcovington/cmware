@@ -2,8 +2,10 @@ import { recordStore } from "../recordStore.js";
 import { Card } from "../components/Card.js";
 import { PeoplePickerModal } from "../components/PeoplePickerModal.js";
 import { Tabs } from "../components/Tabs.js";
+import { RolesModal } from "../components/RolesModal.js";
+import { Roles } from "../roles.js";
 
-const SETTINGS_TABS = ["Directory", "System Defaults", "Notification Preferences", "Data Management"];
+const SETTINGS_TABS = ["Directory", "System Defaults", "Notification Preferences", "Roles & Permissions", "Data Management"];
 
 export class Settings {
     constructor() {
@@ -16,7 +18,7 @@ export class Settings {
                 <div class="stack">
                     <span class="eyebrow">Administration</span>
                     <h1>Project Settings</h1>
-                    <p>Manage project contacts, document numbering, system defaults, and account settings.</p>
+                    <p>Manage project contacts, document numbering, system defaults, roles & permissions, and account settings.</p>
                 </div>
                 <div class="toolbar">
                     <button class="button primary" id="btn-add-contact-settings" type="button">
@@ -37,6 +39,7 @@ export class Settings {
         if (tab === "Directory") return this._renderDirectory();
         if (tab === "System Defaults") return this._renderSystemDefaults();
         if (tab === "Notification Preferences") return this._renderNotifications();
+        if (tab === "Roles & Permissions") return this._renderRoles();
         if (tab === "Data Management") return this._renderDataManagement();
         return "";
     }
@@ -186,6 +189,31 @@ export class Settings {
         `;
     }
 
+    _renderRoles() {
+        return `
+            ${Card.render({
+                title: "Roles & Permissions",
+                eyebrow: "Role-based access control",
+                body: `
+                    <div class="stack">
+                        <div class="settings-row split" style="padding:0.75rem 0;border-bottom:1px solid var(--color-border);">
+                            <div>
+                                <strong>Manage Configurable Roles</strong>
+                                <p class="muted" style="font-size:0.78rem;">Create roles, assign permissions, and control access across the app.</p>
+                            </div>
+                            <div>
+                                <button class="button" id="btn-manage-roles" type="button"><i data-lucide="key"></i> Manage Roles</button>
+                            </div>
+                        </div>
+                        <div style="margin-top:0.75rem;">
+                            <p class="muted">Roles are stored locally in your browser (IndexedDB). Use the Manage Roles dialog to create or adjust roles and assign permissions. Changes take effect immediately.</p>
+                        </div>
+                    </div>
+                `
+            })}
+        `;
+    }
+
     _renderDataManagement() {
         return `
             ${Card.render({
@@ -274,6 +302,11 @@ export class Settings {
         // Save notification prefs
         document.getElementById("btn-save-notifications")?.addEventListener("click", () => {
             document.dispatchEvent(new CustomEvent("toast", { detail: "Notification preferences saved." }));
+        });
+
+        // Manage roles
+        document.getElementById("btn-manage-roles")?.addEventListener("click", async () => {
+            await RolesModal.open();
         });
 
         // Export all data
