@@ -11,7 +11,8 @@ export const STORAGE_KEYS = {
     dailyLogs: "cmware_daily_logs",
     drawings: "cmware_drawings",
     budget: "cmware_budget",
-    punchList: "cmware_punch_list"
+    punchList: "cmware_punch_list",
+    roles: "cmware_roles"
 };
 
 export const STATUS_BADGES = {
