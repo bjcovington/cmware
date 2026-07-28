@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMWare - Dashboard</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-left">
+            <div class="logo">
+                <span class="logo-cm">CM</span><span class="logo-ware">ware</span>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <div class="user-menu" id="user-menu">
+                <div class="user-avatar" id="user-avatar"></div>
+                <span class="user-name" id="user-name"></span>
+                <svg class="dropdown-arrow" viewBox="0 0 24 24" width="16" height="16">
+                    <path d="M7 10l5 5 5-5z" fill="currentColor"/>
+                </svg>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu">
+                <div class="dropdown-header" id="dropdown-header"></div>
+                <button id="settings-btn" class="dropdown-item">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                    Settings
+                </button>
+                <button id="logout-btn" class="dropdown-item">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    Sign Out
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Empty State -->
+        <div class="empty-state" id="empty-state">
+            <div class="empty-state-icon">
+                <svg viewBox="0 0 80 80" width="80" height="80">
+                    <rect x="8" y="20" width="64" height="48" rx="4" fill="none" stroke="#dadce0" stroke-width="3"/>
+                    <rect x="20" y="8" width="40" height="20" rx="3" fill="none" stroke="#dadce0" stroke-width="3"/>
+                    <line x1="24" y1="36" x2="56" y2="36" stroke="#dadce0" stroke-width="2"/>
+                    <line x1="24" y1="44" x2="48" y2="44" stroke="#dadce0" stroke-width="2"/>
+                    <line x1="24" y1="52" x2="52" y2="52" stroke="#dadce0" stroke-width="2"/>
+                </svg>
+            </div>
+            <h2>No Projects Yet</h2>
+            <p>Create a new project or join an existing one to get started.</p>
+            <div class="empty-state-actions">
+                <button class="btn-primary" id="btn-create-job">Create Project</button>
+                <button class="btn-secondary" id="btn-join-job">Join Project</button>
+            </div>
+        </div>
+
+        <!-- Jobs Grid (hidden when empty) -->
+        <div class="jobs-section" id="jobs-section" style="display:none;">
+            <div class="section-header">
+                <div class="section-header-left">
+                    <h2>Projects</h2>
+                </div>
+                <div class="section-header-right">
+                    <div class="search-bar">
+                        <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="search-input" placeholder="Search projects...">
+                    </div>
+                    <div class="action-dropdown-wrap">
+                        <button class="btn-primary btn-sm" id="btn-create-job-2">+ New Project</button>
+                        <button class="btn-icon-split" id="btn-action-toggle" title="More actions">
+                            <svg viewBox="0 0 24 24" width="14" height="14"><path d="M7 10l5 5 5-5z" fill="currentColor"/></svg>
+                        </button>
+                        <div class="action-dropdown" id="action-dropdown">
+                            <button class="dropdown-item" id="btn-create-job-3">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                Create Project
+                            </button>
+                            <button class="dropdown-item" id="btn-join-job-2">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                                Join Project
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="jobs-grid" id="jobs-grid"></div>
+            <div class="no-results" id="no-results" style="display:none;">
+                <p>No projects match your search.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create Job Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal" id="create-job-modal">
+            <div class="modal-header">
+                <h2>Create New Project</h2>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="create-job-form">
+                    <div class="form-section">
+                        <h3>Project Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="job-number">Job Number</label>
+                                <input type="text" id="job-number" placeholder="24001.01">
+                                <span class="form-hint">Auto-generated. Edit to set a custom number (e.g. 24001.02 for a sub-job).</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="job-status">Status</label>
+                                <select id="job-status">
+                                    <option value="Planning" selected>Planning</option>
+                                    <option value="Bidding">Bidding</option>
+                                    <option value="Permitting">Permitting</option>
+                                    <option value="Mobilization">Mobilization</option>
+                                    <option value="Building">Building</option>
+                                    <option value="Punch List">Punch List</option>
+                                    <option value="Close-Out">Close-Out</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="On Hold">On Hold</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="job-name">Project Name *</label>
+                            <input type="text" id="job-name" placeholder="e.g. Downtown Office Renovation" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="job-description">Description / Scope of Work</label>
+                            <textarea id="job-description" rows="3" placeholder="Brief description of the project scope..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Client & Location</h3>
+                        <div class="form-group">
+                            <label for="job-client">Client / Owner *</label>
+                            <input type="text" id="job-client" placeholder="e.g. ABC Corporation" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="job-address">Street Address</label>
+                            <input type="text" id="job-address" placeholder="123 Main Street">
+                        </div>
+                        <div class="form-row form-row-3">
+                            <div class="form-group">
+                                <label for="job-city">City</label>
+                                <input type="text" id="job-city" placeholder="City">
+                            </div>
+                            <div class="form-group">
+                                <label for="job-state">State</label>
+                                <input type="text" id="job-state" placeholder="State" maxlength="2">
+                            </div>
+                            <div class="form-group">
+                                <label for="job-zip">Zip Code</label>
+                                <input type="text" id="job-zip" placeholder="12345" maxlength="10">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Project Details</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="job-type">Job Type *</label>
+                                <select id="job-type" required>
+                                    <option value="">Select type...</option>
+                                    <option value="Commercial">Commercial</option>
+                                    <option value="Residential">Residential</option>
+                                    <option value="Industrial">Industrial</option>
+                                    <option value="Government">Government / Public</option>
+                                    <option value="Institutional">Institutional</option>
+                                    <option value="Mixed-Use">Mixed-Use</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="job-project-type">Project Type *</label>
+                                <select id="job-project-type" required>
+                                    <option value="">Select type...</option>
+                                    <option value="New Construction">New Construction</option>
+                                    <option value="Renovation">Renovation</option>
+                                    <option value="Remodel">Remodel</option>
+                                    <option value="Addition">Addition</option>
+                                    <option value="Tenant Improvement">Tenant Improvement</option>
+                                    <option value="Demolition">Demolition</option>
+                                    <option value="Repair">Repair</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row" id="custom-types-row" style="display:none;">
+                            <div class="form-group" id="job-type-custom-group" style="display:none;">
+                                <label for="job-type-custom">Custom Job Type</label>
+                                <input type="text" id="job-type-custom" placeholder="Specify job type...">
+                            </div>
+                            <div class="form-group" id="project-type-custom-group" style="display:none;">
+                                <label for="project-type-custom">Custom Project Type</label>
+                                <input type="text" id="project-type-custom" placeholder="Specify project type...">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="job-start-date">Start Date</label>
+                                <input type="date" id="job-start-date">
+                            </div>
+                            <div class="form-group">
+                                <label for="job-end-date">Estimated End Date</label>
+                                <input type="date" id="job-end-date">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Team Members</h3>
+                        <div class="creator-role-row">
+                            <div class="form-group" style="margin-bottom:0;">
+                                <label for="creator-role">Your Role</label>
+                                <select id="creator-role">
+                                    <option value="Owner" selected>Owner</option>
+                                    <option value="Lead Project Manager">Lead Project Manager</option>
+                                    <option value="Project Manager">Project Manager</option>
+                                    <option value="Project Engineer">Project Engineer</option>
+                                    <option value="Field Engineer">Field Engineer</option>
+                                    <option value="Lead Superintendent">Lead Superintendent</option>
+                                    <option value="Superintendent">Superintendent</option>
+                                    <option value="Owner's Rep">Owner's Rep</option>
+                                    <option value="Architect">Architect</option>
+                                    <option value="Interior Designer">Interior Designer</option>
+                                    <option value="Civil Engineer">Civil Engineer</option>
+                                    <option value="Structural Engineer">Structural Engineer</option>
+                                    <option value="Mechanical Engineer">Mechanical Engineer</option>
+                                    <option value="Electrical Engineer">Electrical Engineer</option>
+                                    <option value="Plumbing Engineer">Plumbing Engineer</option>
+                                    <option value="Intern">Intern</option>
+                                    <option value="Member">Member</option>
+                                </select>
+                            </div>
+                        </div>
+                        <p class="section-desc" style="margin-top:12px;">Assign people by email. They'll be added as pending members until approved.</p>
+                        <div class="member-input-row">
+                            <input type="email" id="member-email-input" placeholder="colleague@company.com">
+                            <button type="button" class="btn-add-member" id="btn-add-member">Add</button>
+                        </div>
+                        <div class="members-list" id="members-list">
+                            <!-- Members appear here -->
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="btn-cancel">Cancel</button>
+                        <button type="submit" class="btn-primary">Create Project</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Join Job Modal -->
+    <div class="modal-overlay" id="join-modal-overlay">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h2>Join a Project</h2>
+                <button class="modal-close" id="join-modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="join-job-form">
+                    <div class="form-group">
+                        <label for="join-job-number">Job Number</label>
+                        <input type="text" id="join-job-number" placeholder="e.g. 24001.01" required>
+                        <span class="form-hint">Enter the full job number (e.g. 24001.01)</span>
+                    </div>
+                    <div id="join-error" class="error-message"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="btn-join-cancel">Cancel</button>
+                        <button type="submit" class="btn-primary">Join Project</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settings-modal-overlay">
+        <div class="modal modal-settings">
+            <div class="modal-header">
+                <h2>Account Settings</h2>
+                <button class="modal-close" id="settings-modal-close">&times;</button>
+            </div>
+            <div class="settings-body">
+                <div class="settings-tabs">
+                    <button class="settings-tab active" data-settings-tab="profile">Profile</button>
+                    <button class="settings-tab" data-settings-tab="password">Password</button>
+                </div>
+
+                <!-- Profile Tab -->
+                <div class="settings-tab-content active" id="settings-tab-profile">
+                    <form id="settings-profile-form">
+                        <div class="settings-avatar-section">
+                            <div class="settings-avatar-preview" id="settings-avatar-preview">
+                                <svg class="default-avatar" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="50" cy="50" r="50" fill="#e0e0e0"/>
+                                    <circle cx="50" cy="38" r="16" fill="#bdbdbd"/>
+                                    <ellipse cx="50" cy="75" rx="26" ry="20" fill="#bdbdbd"/>
+                                </svg>
+                            </div>
+                            <div class="settings-avatar-actions">
+                                <label for="settings-avatar-input" class="btn-secondary btn-sm">Change Photo</label>
+                                <input type="file" id="settings-avatar-input" accept="image/*" hidden>
+                                <button type="button" class="btn-text" id="settings-remove-avatar">Remove</button>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="settings-firstname">First Name</label>
+                                <input type="text" id="settings-firstname" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="settings-lastname">Last Name</label>
+                                <input type="text" id="settings-lastname" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="settings-email">Email</label>
+                            <input type="email" id="settings-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="settings-phone">Phone Number</label>
+                            <input type="tel" id="settings-phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="settings-company">Company</label>
+                            <input type="text" id="settings-company" placeholder="e.g. Turner Construction">
+                        </div>
+
+                        <div id="settings-profile-msg" class="settings-msg"></div>
+                        <div class="settings-actions">
+                            <button type="submit" class="btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Password Tab -->
+                <div class="settings-tab-content" id="settings-tab-password">
+                    <form id="settings-password-form">
+                        <div class="form-group">
+                            <label for="settings-current-pw">Current Password</label>
+                            <input type="password" id="settings-current-pw" placeholder="Enter current password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="settings-new-pw">New Password</label>
+                            <input type="password" id="settings-new-pw" placeholder="Min. 6 characters" required minlength="6">
+                        </div>
+                        <div class="form-group">
+                            <label for="settings-confirm-pw">Confirm New Password</label>
+                            <input type="password" id="settings-confirm-pw" placeholder="Confirm new password" required>
+                        </div>
+
+                        <div id="settings-password-msg" class="settings-msg"></div>
+                        <div class="settings-actions">
+                            <button type="submit" class="btn-primary">Update Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>

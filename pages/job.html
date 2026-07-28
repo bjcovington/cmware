@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMWare - Project</title>
+    <link rel="stylesheet" href="../css/job.css">
+</head>
+<body>
+    <!-- Loading Transition -->
+    <div class="transition-screen" id="transition-screen">
+        <div class="transition-content">
+            <svg class="transition-svg" viewBox="0 0 120 120" width="120" height="120">
+                <circle class="transition-circle" cx="60" cy="60" r="52" fill="none" stroke="#4285F4" stroke-width="4" stroke-linecap="round"/>
+                <polyline class="transition-check" points="36,62 52,78 84,42" fill="none" stroke="#4285F4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="transition-text" id="transition-text">Opening Project...</div>
+        </div>
+    </div>
+
+    <header class="topbar">
+        <div class="topbar-left">
+            <a href="dashboard.html" class="back-link">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            </a>
+            <div class="logo">
+                <span class="logo-cm">CM</span><span class="logo-ware">ware</span>
+            </div>
+        </div>
+        <div class="topbar-center">
+            <span class="job-number-badge" id="topbar-job-number"></span>
+            <span class="job-title-topbar" id="topbar-job-name"></span>
+        </div>
+        <div class="topbar-right">
+            <div class="user-menu" id="user-menu">
+                <div class="user-avatar" id="user-avatar"></div>
+                <span class="user-name" id="user-name"></span>
+                <svg class="dropdown-arrow" viewBox="0 0 24 24" width="16" height="16">
+                    <path d="M7 10l5 5 5-5z" fill="currentColor"/>
+                </svg>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu">
+                <div class="dropdown-header" id="dropdown-header"></div>
+                <button id="settings-btn" class="dropdown-item">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                    Account Settings
+                </button>
+                <button id="logout-btn" class="dropdown-item">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    Sign Out
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" data-page="dashboard">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="sidebar-link" data-page="cost">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                    <span>Cost Management</span>
+                </a>
+                <a href="#" class="sidebar-link" data-page="change-orders">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    <span>Change Orders</span>
+                </a>
+                <a href="#" class="sidebar-link" data-page="rfis">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    <span>RFIs</span>
+                </a>
+                <a href="#" class="sidebar-link" data-page="submittals">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+                    <span>Submittals</span>
+                </a>
+                <a href="#" class="sidebar-link" data-page="drawings">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    <span>Drawings</span>
+                </a>
+                <a href="#" class="sidebar-link" data-page="documents">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                    <span>Documents</span>
+                </a>
+                <a href="#" class="sidebar-link" data-page="daily-logs">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    <span>Daily Logs</span>
+                </a>
+                <a href="#" class="sidebar-link" data-page="punch-list">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    <span>Punch List</span>
+                </a>
+                <a href="#" class="sidebar-link" data-page="schedule">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span>Schedule</span>
+                </a>
+                <a href="#" class="sidebar-link" data-page="contacts">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                    <span>Contacts</span>
+                </a>
+                <a href="#" class="sidebar-link" data-page="photos">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    <span>Photos</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="job-main" id="job-main">
+            <!-- Dashboard Page -->
+            <div class="job-page active" id="page-dashboard">
+                <div class="dashboard-header">
+                    <div class="dashboard-header-left">
+                        <h1 id="page-title">Project Dashboard</h1>
+                        <span class="status-pill" id="job-status-pill"></span>
+                    </div>
+                    <button class="btn-secondary btn-sm" id="btn-customize-dashboard">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                        Customize
+                    </button>
+                </div>
+                <div class="widget-grid" id="widget-grid"></div>
+            </div>
+
+            <!-- Contacts Page -->
+            <div class="job-page" id="page-contacts">
+                <div class="dashboard-header">
+                    <div class="dashboard-header-left">
+                        <h1>Contacts</h1>
+                    </div>
+                </div>
+                <div id="contacts-content"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Customize Dashboard Modal -->
+    <div class="modal-overlay" id="customize-overlay">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h2>Customize Dashboard</h2>
+                <button class="modal-close" id="customize-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="section-desc">Toggle which widgets are visible on your project dashboard.</p>
+                <div class="widget-toggles" id="widget-toggles"></div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="customize-cancel">Cancel</button>
+                    <button class="btn-primary" id="customize-save">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settings-modal-overlay">
+        <div class="modal modal-settings">
+            <div class="modal-header">
+                <h2>Account Settings</h2>
+                <button class="modal-close" id="settings-modal-close">&times;</button>
+            </div>
+            <div class="settings-body">
+                <div class="settings-tabs">
+                    <button class="settings-tab active" data-settings-tab="profile">Profile</button>
+                    <button class="settings-tab" data-settings-tab="password">Password</button>
+                </div>
+                <div class="settings-tab-content active" id="settings-tab-profile">
+                    <form id="settings-profile-form">
+                        <div class="settings-avatar-section">
+                            <div class="settings-avatar-preview" id="settings-avatar-preview">
+                                <svg class="default-avatar" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="50" cy="50" r="50" fill="#e0e0e0"/>
+                                    <circle cx="50" cy="38" r="16" fill="#bdbdbd"/>
+                                    <ellipse cx="50" cy="75" rx="26" ry="20" fill="#bdbdbd"/>
+                                </svg>
+                            </div>
+                            <div class="settings-avatar-actions">
+                                <label for="settings-avatar-input" class="btn-secondary btn-sm">Change Photo</label>
+                                <input type="file" id="settings-avatar-input" accept="image/*" hidden>
+                                <button type="button" class="btn-text" id="settings-remove-avatar">Remove</button>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="settings-firstname">First Name</label>
+                                <input type="text" id="settings-firstname" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="settings-lastname">Last Name</label>
+                                <input type="text" id="settings-lastname" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="settings-email">Email</label>
+                            <input type="email" id="settings-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="settings-phone">Phone Number</label>
+                            <input type="tel" id="settings-phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="settings-company">Company</label>
+                            <input type="text" id="settings-company" placeholder="e.g. Turner Construction">
+                        </div>
+                        <div id="settings-profile-msg" class="settings-msg"></div>
+                        <div class="settings-actions">
+                            <button type="submit" class="btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="settings-tab-content" id="settings-tab-password">
+                    <form id="settings-password-form">
+                        <div class="form-group">
+                            <label for="settings-current-pw">Current Password</label>
+                            <input type="password" id="settings-current-pw" placeholder="Enter current password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="settings-new-pw">New Password</label>
+                            <input type="password" id="settings-new-pw" placeholder="Min. 6 characters" required minlength="6">
+                        </div>
+                        <div class="form-group">
+                            <label for="settings-confirm-pw">Confirm New Password</label>
+                            <input type="password" id="settings-confirm-pw" placeholder="Confirm new password" required>
+                        </div>
+                        <div id="settings-password-msg" class="settings-msg"></div>
+                        <div class="settings-actions">
+                            <button type="submit" class="btn-primary">Update Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Approve Member Modal -->
+    <div class="modal-overlay" id="approve-overlay">
+        <div class="modal modal-approve">
+            <div class="modal-header">
+                <h2>Approve Member</h2>
+                <button class="modal-close" id="approve-close">&times;</button>
+            </div>
+            <div class="modal-body" id="approve-body">
+                <div class="approve-user-header">
+                    <div class="approve-avatar" id="approve-avatar"></div>
+                    <div>
+                        <div class="approve-name" id="approve-name"></div>
+                        <div class="approve-email" id="approve-email"></div>
+                    </div>
+                </div>
+                <p class="approve-prompt">Assign a role and details for this member:</p>
+                <div class="form-group">
+                    <label for="approve-role">Role *</label>
+                    <select id="approve-role"></select>
+                </div>
+                <div class="form-group">
+                    <label for="approve-company">Company</label>
+                    <input type="text" id="approve-company" placeholder="e.g. Turner Construction">
+                </div>
+                <div class="form-group">
+                    <label for="approve-notes">Notes (optional)</label>
+                    <textarea id="approve-notes" rows="2" placeholder="Add any notes about this member..."></textarea>
+                </div>
+                <div class="approve-actions">
+                    <button class="btn-deny" id="approve-deny-btn">Deny</button>
+                    <button class="btn-primary btn-approve-confirm" id="approve-confirm-btn">Approve</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/job.js"></script>
+</body>
+</html>
