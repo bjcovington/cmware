@@ -12,6 +12,9 @@ import { db } from "./db.js";
 
 const SUBCONTRACTS_KEY = "cmware_subcontracts";
 const SETTINGS_KEY = "cmware_settings";
+const PROJECTS_KEY = "cmware_projects";
+const CURRENT_PROJECT_KEY = "cmware_current_project";
+const TEAM_KEY = "cmware_team";
 
 const DEFAULT_SETTINGS = {
     rfiPrefix: "RFI",
@@ -79,6 +82,14 @@ function getStored(key, seedData) {
 function setStored(key, data, eventName = "records-changed") {
     localStorage.setItem(key, JSON.stringify(data));
     document.dispatchEvent(new CustomEvent(eventName));
+}
+
+function getProjects() {
+    return getStored(PROJECTS_KEY, seedProjects);
+}
+
+function setProjects(projects) {
+    setStored(PROJECTS_KEY, projects, "projects-changed");
 }
 
 export const recordStore = {
@@ -196,7 +207,6 @@ export const recordStore = {
     },
 
     updateRecord(id, fields) {
-        // Recalculate revised budget if costImpact changed
         if (fields.costImpact) {
             fields.cost = Number(String(fields.costImpact).replace(/[^0-9.]/g, "") || 0);
         }
@@ -273,7 +283,36 @@ export const recordStore = {
         try { db.put("projects", info).catch(() => {}); } catch (e) {}
     },
 
-    // ── Settings ─────────────────────────────────────────────────────────
+    // ── Projects ────────────────────────────────────────────────────────────
+    getProjects() { return getProjects(); },
+
+    getProject(id) {
+        return getProjects().find(p => p.id === id) || seedProjects[0];
+    },
+
+    createProject(project) {
+        const all = getProjects();
+        const newProject = {
+            id: `prj-${Date.now()}`,
+            ...project,
+            createdAt: new Date().toISOString().split("T")[0]
+        };
+        setProjects([...all, newProject]);
+        return newProject;
+    },
+
+    updateProject(id, vals) {
+        const all = getProjects().map((p) =>
+            p.id === id ? { ...p, ...vals, updatedAt: new Date().toISOString() } : p
+        );
+        setProjects(all);
+    },
+
+    deleteProject(id) {
+        setProjects(getProjects().filter(p => p.id !== id));
+    },
+
+    // ── Settings ───────────────────────────────────────────────────────────
     getSettings() { return getStored(SETTINGS_KEY, DEFAULT_SETTINGS); },
 
     updateSettings(updates) {

@@ -10,12 +10,15 @@ import { FloatingActionButton } from "./components/Button.js";
 import { routes } from "./config.js";
 import { auth } from "./auth.js";
 
+const PUBLIC_ROUTES = ["login", "signup"];
+
 class ConstructionManagerApp {
     constructor(root) {
         this.root = root;
         this.router = new Router(routes, document);
         this.toast = new Toast();
         this.modal = new Modal();
+        this.isAuthenticated = false;
     }
 
     init() {
@@ -23,14 +26,43 @@ class ConstructionManagerApp {
         this.root.classList.toggle("sidebar-collapsed", store.getState().sidebarCollapsed);
 
         document.addEventListener("user-changed", () => {
-            this.renderShell();
-            this.router.mount(document.getElementById("app-main"), this.afterRoute.bind(this));
+            this.checkAuthAndRender();
         });
 
-        this.renderShell();
-        this.router.mount(document.getElementById("app-main"), this.afterRoute.bind(this));
+        window.addEventListener("hashchange", () => this.checkAuthAndRender());
+        this.checkAuthAndRender();
         this.registerServiceWorker();
         window.lucide?.createIcons();
+    }
+
+    checkAuthAndRender() {
+        const hash = location.hash.replace(/^#\/?/, "");
+        const [path = "dashboard"] = hash.split("?");
+        const route = routes.find(r => r.path === path) || routes[0];
+        const isPublic = PUBLIC_ROUTES.includes(path);
+
+        const currentUser = auth.getCurrentUser();
+        this.isAuthenticated = !!currentUser;
+
+        if (!this.isAuthenticated && !isPublic) {
+            location.hash = "#/login";
+            return;
+        }
+
+        if (this.isAuthenticated && isPublic) {
+            location.hash = "#/dashboard";
+            return;
+        }
+
+        if (this.isAuthenticated) {
+            document.body.classList.toggle("dark", store.getState().theme === "dark");
+            this.root.classList.toggle("sidebar-collapsed", store.getState().sidebarCollapsed);
+            this.renderShell();
+            this.router.mount(document.getElementById("app-main"), this.afterRoute.bind(this));
+        } else {
+            this.root.innerHTML = "";
+            this.router.mount(this.root, this.afterRoute.bind(this));
+        }
     }
 
     renderShell() {
@@ -247,8 +279,8 @@ class ConstructionManagerApp {
             detail: {
                 title: "Sign Up New Account",
                 body,
-                onSubmit: (values) => {
-                    const res = auth.signup(values);
+                onSubmit: async (values) => {
+                    const res = await auth.signup(values);
                     if (res.success) {
                         document.dispatchEvent(new CustomEvent("toast", { detail: `Account created! Welcome, ${res.user.name}` }));
                     } else {
