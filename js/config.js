@@ -23,35 +23,35 @@ import { Profile } from "./pages/Profile.js";
 import { JoinProject } from "./pages/JoinProject.js";
 
 // Financial Module - Phase 1: Foundation
-import { CostCodes } from "./pages/financials/CostCodes.js";
-import { Budget } from "./pages/financials/Budget.js";
-import { Contracts } from "./pages/financials/Contracts.js";
-import { FinancialDashboard } from "./pages/financials/FinancialDashboard.js";
+import { CostCodes } from "./pages/Financials/CostCodes.js";
+import { Budget } from "./pages/Financials/Budget.js";
+import { Contracts } from "./pages/Financials/Contracts.js";
+import { FinancialDashboard } from "./pages/Financials/FinancialDashboard.js";
 
 // Financial Module - Phase 2: Procurement
-import { Buyout } from "./pages/financials/Buyout.js";
-import { PurchaseOrders } from "./pages/financials/PurchaseOrders.js";
-import { Commitments } from "./pages/financials/Commitments.js";
-import { Subcontracts } from "./pages/financials/Subcontracts.js";
+import { Buyout } from "./pages/Financials/Buyout.js";
+import { PurchaseOrders } from "./pages/Financials/PurchaseOrders.js";
+import { Commitments } from "./pages/Financials/Commitments.js";
+import { Subcontracts } from "./pages/Financials/Subcontracts.js";
 
 // Financial Module - Phase 3: Change Management
-import { ChangeEvents } from "./pages/financials/ChangeEvents.js";
-import { PotentialChangeOrders } from "./pages/financials/PotentialChangeOrders.js";
-import { OwnerChangeOrders } from "./pages/financials/OwnerChangeOrders.js";
-import { SubcontractChangeOrders } from "./pages/financials/SubcontractChangeOrders.js";
+import { ChangeEvents } from "./pages/Financials/ChangeEvents.js";
+import { PotentialChangeOrders } from "./pages/Financials/PotentialChangeOrders.js";
+import { OwnerChangeOrders } from "./pages/Financials/OwnerChangeOrders.js";
+import { SubcontractChangeOrders } from "./pages/Financials/SubcontractChangeOrders.js";
 
 // Financial Module - Phase 4: Accounting
-import { Invoices } from "./pages/financials/Invoices.js";
-import { PayApplications } from "./pages/financials/PayApplications.js";
-import { PaymentTracking } from "./pages/financials/PaymentTracking.js";
-import { Retention } from "./pages/financials/Retention.js";
+import { Invoices } from "./pages/Financials/Invoices.js";
+import { PayApplications } from "./pages/Financials/PayApplications.js";
+import { PaymentTracking } from "./pages/Financials/PaymentTracking.js";
+import { Retention } from "./pages/Financials/Retention.js";
 
 // Financial Module - Phase 5: Executive Controls
-import { Forecasting } from "./pages/financials/Forecasting.js";
-import { CashFlow } from "./pages/financials/CashFlow.js";
-import { FinancialReports } from "./pages/financials/FinancialReports.js";
-import { AuditHistory } from "./pages/financials/AuditHistory.js";
-import { ExecutiveDashboard } from "./pages/financials/ExecutiveDashboard.js";
+import { Forecasting } from "./pages/Financials/Forecasting.js";
+import { CashFlow } from "./pages/Financials/CashFlow.js";
+import { FinancialReports } from "./pages/Financials/FinancialReports.js";
+import { AuditHistory } from "./pages/Financials/AuditHistory.js";
+import { ExecutiveDashboard } from "./pages/Financials/ExecutiveDashboard.js";
 
 export const routes = [
     { path: "login", title: "Sign In", icon: "log-in", section: "Auth", page: new Login(), public: true },

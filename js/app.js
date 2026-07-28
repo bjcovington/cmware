@@ -21,7 +21,8 @@ class ConstructionManagerApp {
         this.isAuthenticated = false;
     }
 
-    init() {
+    async init() {
+        await auth.init();
         document.body.classList.toggle("dark", store.getState().theme === "dark");
         this.root.classList.toggle("sidebar-collapsed", store.getState().sidebarCollapsed);
 
