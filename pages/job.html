@@ -134,6 +134,117 @@
                 </div>
                 <div id="contacts-content"></div>
             </div>
+
+            <!-- Cost Management Page -->
+            <div class="job-page" id="page-cost">
+                <div class="dashboard-header">
+                    <div class="dashboard-header-left">
+                        <h1>Cost Management</h1>
+                    </div>
+                </div>
+                <div class="sub-tabs">
+                    <button class="sub-tab active" data-cost-tab="overview">Overview</button>
+                    <button class="sub-tab" data-cost-tab="costcodes">Cost Codes</button>
+                    <button class="sub-tab" data-cost-tab="commitments">Commitments</button>
+                </div>
+                <div id="cost-content"></div>
+            </div>
+
+            <!-- Change Orders Page -->
+            <div class="job-page" id="page-change-orders">
+                <div class="dashboard-header">
+                    <div class="dashboard-header-left">
+                        <h1>Change Orders</h1>
+                    </div>
+                    <button class="btn-primary btn-sm" id="btn-add-change-order">New Change Order</button>
+                </div>
+                <div id="change-orders-content"></div>
+            </div>
+
+            <!-- RFIs Page -->
+            <div class="job-page" id="page-rfis">
+                <div class="dashboard-header">
+                    <div class="dashboard-header-left">
+                        <h1>RFIs</h1>
+                    </div>
+                    <button class="btn-primary btn-sm" id="btn-add-rfi">New RFI</button>
+                </div>
+                <div id="rfis-content"></div>
+            </div>
+
+            <!-- Submittals Page -->
+            <div class="job-page" id="page-submittals">
+                <div class="dashboard-header">
+                    <div class="dashboard-header-left">
+                        <h1>Submittals</h1>
+                    </div>
+                    <button class="btn-primary btn-sm" id="btn-add-submittal">New Submittal</button>
+                </div>
+                <div id="submittals-content"></div>
+            </div>
+
+            <!-- Drawings Page -->
+            <div class="job-page" id="page-drawings">
+                <div class="dashboard-header">
+                    <div class="dashboard-header-left">
+                        <h1>Drawings</h1>
+                    </div>
+                </div>
+                <div id="drawings-content"></div>
+            </div>
+
+            <!-- Documents Page -->
+            <div class="job-page" id="page-documents">
+                <div class="dashboard-header">
+                    <div class="dashboard-header-left">
+                        <h1>Documents</h1>
+                    </div>
+                </div>
+                <div id="documents-content"></div>
+            </div>
+
+            <!-- Daily Logs Page -->
+            <div class="job-page" id="page-daily-logs">
+                <div class="dashboard-header">
+                    <div class="dashboard-header-left">
+                        <h1>Daily Logs</h1>
+                    </div>
+                    <button class="btn-primary btn-sm" id="btn-add-log-entry">New Entry</button>
+                </div>
+                <div id="daily-logs-content"></div>
+            </div>
+
+            <!-- Punch List Page -->
+            <div class="job-page" id="page-punch-list">
+                <div class="dashboard-header">
+                    <div class="dashboard-header-left">
+                        <h1>Punch List</h1>
+                    </div>
+                    <button class="btn-primary btn-sm" id="btn-add-punch-item">New Item</button>
+                </div>
+                <div id="punch-list-content"></div>
+            </div>
+
+            <!-- Schedule Page -->
+            <div class="job-page" id="page-schedule">
+                <div class="dashboard-header">
+                    <div class="dashboard-header-left">
+                        <h1>Schedule</h1>
+                    </div>
+                    <button class="btn-primary btn-sm" id="btn-add-milestone">Add Milestone</button>
+                </div>
+                <div id="schedule-content"></div>
+            </div>
+
+            <!-- Photos Page -->
+            <div class="job-page" id="page-photos">
+                <div class="dashboard-header">
+                    <div class="dashboard-header-left">
+                        <h1>Photos</h1>
+                    </div>
+                </div>
+                <div id="photos-content"></div>
+            </div>
         </main>
     </div>
 
@@ -267,6 +378,461 @@
                     <button class="btn-deny" id="approve-deny-btn">Deny</button>
                     <button class="btn-primary btn-approve-confirm" id="approve-confirm-btn">Approve</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Order Modal -->
+    <div class="modal-overlay" id="co-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="co-modal-title">New Change Order</h2>
+                <button class="modal-close" id="co-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="co-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="co-number">CO Number *</label>
+                            <input type="text" id="co-number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="co-amount">Amount ($) *</label>
+                            <input type="number" id="co-amount" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="co-title">Title *</label>
+                        <input type="text" id="co-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="co-status">Status</label>
+                        <select id="co-status">
+                            <option value="Open">Open</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="co-description">Description</label>
+                        <textarea id="co-description" rows="3"></textarea>
+                    </div>
+                    <div id="co-msg" class="settings-msg"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="co-cancel">Cancel</button>
+                        <button type="submit" class="btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- RFI Modal -->
+    <div class="modal-overlay" id="rfi-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="rfi-modal-title">New RFI</h2>
+                <button class="modal-close" id="rfi-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="rfi-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="rfi-number">RFI Number *</label>
+                            <input type="text" id="rfi-number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="rfi-subject">Subject *</label>
+                            <input type="text" id="rfi-subject" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="rfi-status">Status</label>
+                        <select id="rfi-status">
+                            <option value="Open">Open</option>
+                            <option value="Answered">Answered</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="rfi-question">Question</label>
+                        <textarea id="rfi-question" rows="3" placeholder="Describe the question or clarification needed..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="rfi-answer">Answer</label>
+                        <textarea id="rfi-answer" rows="3" placeholder="Response from architect/engineer..."></textarea>
+                    </div>
+                    <div id="rfi-msg" class="settings-msg"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="rfi-cancel">Cancel</button>
+                        <button type="submit" class="btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submittal Modal -->
+    <div class="modal-overlay" id="submittal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="submittal-modal-title">New Submittal</h2>
+                <button class="modal-close" id="submittal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="submittal-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="submittal-number">Submittal Number *</label>
+                            <input type="text" id="submittal-number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="submittal-title">Title *</label>
+                            <input type="text" id="submittal-title" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="submittal-status">Status</label>
+                        <select id="submittal-status">
+                            <option value="Open">Open</option>
+                            <option value="Under Review">Under Review</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="submittal-notes">Notes</label>
+                        <textarea id="submittal-notes" rows="3"></textarea>
+                    </div>
+                    <div id="submittal-msg" class="settings-msg"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="submittal-cancel">Cancel</button>
+                        <button type="submit" class="btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Punch List Modal -->
+    <div class="modal-overlay" id="punch-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="punch-modal-title">New Punch List Item</h2>
+                <button class="modal-close" id="punch-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="punch-form">
+                    <div class="form-group">
+                        <label for="punch-title">Title *</label>
+                        <input type="text" id="punch-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="punch-assignee">Assignee</label>
+                        <select id="punch-assignee">
+                            <option value="">Unassigned</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="punch-status">Status</label>
+                        <select id="punch-status">
+                            <option value="Open">Open</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Ready for Review">Ready for Review</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="punch-description">Description</label>
+                        <textarea id="punch-description" rows="3"></textarea>
+                    </div>
+                    <div id="punch-msg" class="settings-msg"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="punch-cancel">Cancel</button>
+                        <button type="submit" class="btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Milestone Modal -->
+    <div class="modal-overlay" id="milestone-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="milestone-modal-title">Add Milestone</h2>
+                <button class="modal-close" id="milestone-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="milestone-form">
+                    <div class="form-group">
+                        <label for="milestone-title">Title *</label>
+                        <input type="text" id="milestone-title" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="milestone-start">Start Date *</label>
+                            <input type="date" id="milestone-start" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="milestone-end">End Date *</label>
+                            <input type="date" id="milestone-end" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="milestone-status">Status</label>
+                        <select id="milestone-status">
+                            <option value="Not Started">Not Started</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Complete">Complete</option>
+                            <option value="Delayed">Delayed</option>
+                        </select>
+                    </div>
+                    <div id="milestone-msg" class="settings-msg"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="milestone-cancel">Cancel</button>
+                        <button type="submit" class="btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bucket Modal -->
+    <div class="modal-overlay" id="bucket-overlay">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h2 id="bucket-modal-title">Add Bucket</h2>
+                <button class="modal-close" id="bucket-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="bucket-form">
+                    <div class="form-group">
+                        <label for="bucket-name">Bucket Name *</label>
+                        <input type="text" id="bucket-name" placeholder="e.g. Labor, Materials" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bucket-budget">Budget ($)</label>
+                            <input type="number" id="bucket-budget" step="0.01" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="bucket-actual">Actual ($)</label>
+                            <input type="number" id="bucket-actual" step="0.01" value="0">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group" style="justify-content:flex-end;display:flex;flex-direction:column;">
+                            <label>&nbsp;</label>
+                            <span style="font-size:12px;color:var(--text-secondary);padding:9px 0;">Committed auto-calculated from POs/Subs</span>
+                        </div>
+                        <div class="form-group" style="justify-content:flex-end;display:flex;flex-direction:column;">
+                            <label>&nbsp;</label>
+                            <span style="font-size:12px;color:var(--text-secondary);padding:9px 0;">Remaining = Budget − Actual</span>
+                        </div>
+                    </div>
+                    <div id="bucket-msg" class="settings-msg"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="bucket-cancel">Cancel</button>
+                        <button type="submit" class="btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cost Code Modal -->
+    <div class="modal-overlay" id="costcode-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="costcode-modal-title">Add Cost Code</h2>
+                <button class="modal-close" id="costcode-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="costcode-form">
+                    <div class="form-group">
+                        <label for="costcode-division">CSI Division</label>
+                        <select id="costcode-division">
+                            <option value="">-- Select Division --</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="costcode-number">Cost Code Number *</label>
+                            <input type="text" id="costcode-number" placeholder="e.g. 03100" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="costcode-sort">Sort Order</label>
+                            <input type="number" id="costcode-sort" value="0" min="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="costcode-name">Name *</label>
+                        <input type="text" id="costcode-name" placeholder="e.g. Structural Concrete" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="costcode-description">Description</label>
+                        <textarea id="costcode-description" rows="2" placeholder="Optional description..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="costcode-status">Status</label>
+                        <select id="costcode-status">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div id="costcode-msg" class="settings-msg"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="costcode-cancel">Cancel</button>
+                        <button type="submit" class="btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Daily Log Modal -->
+    <div class="modal-overlay" id="log-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="log-modal-title">New Log Entry</h2>
+                <button class="modal-close" id="log-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="log-form">
+                    <div class="form-group">
+                        <label for="log-date">Date *</label>
+                        <input type="date" id="log-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="log-content">Notes *</label>
+                        <textarea id="log-content" rows="5" placeholder="Weather, crew counts, work performed, issues, etc." required></textarea>
+                    </div>
+                    <div id="log-msg" class="settings-msg"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="log-cancel">Cancel</button>
+                        <button type="submit" class="btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cost Item Modal -->
+    <div class="modal-overlay" id="cost-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="cost-modal-title">Add Cost Item</h2>
+                <button class="modal-close" id="cost-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="cost-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cost-category">Category *</label>
+                            <select id="cost-category" required>
+                                <option value="Materials">Materials</option>
+                                <option value="Labor">Labor</option>
+                                <option value="Equipment">Equipment</option>
+                                <option value="Subcontractor">Subcontractor</option>
+                                <option value="Permits">Permits</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cost-amount">Amount ($) *</label>
+                            <input type="number" id="cost-amount" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cost-description">Description *</label>
+                        <input type="text" id="cost-description" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cost-type">Type</label>
+                        <select id="cost-type">
+                            <option value="Budget">Budget</option>
+                            <option value="Actual">Actual</option>
+                            <option value="Committed">Committed</option>
+                        </select>
+                    </div>
+                    <div id="cost-msg" class="settings-msg"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="cost-cancel">Cancel</button>
+                        <button type="submit" class="btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Commitment Modal -->
+    <div class="modal-overlay" id="commitment-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="commitment-modal-title">Add Commitment</h2>
+                <button class="modal-close" id="commitment-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="commitment-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="commitment-type">Type *</label>
+                            <select id="commitment-type" required>
+                                <option value="Purchase Order">Purchase Order</option>
+                                <option value="Subcontract">Subcontract</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="commitment-number">Number *</label>
+                            <input type="text" id="commitment-number" placeholder="e.g. PO-001" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="commitment-title">Title *</label>
+                        <input type="text" id="commitment-title" placeholder="e.g. Concrete Supply" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="commitment-vendor">Vendor / Contractor *</label>
+                        <input type="text" id="commitment-vendor" placeholder="e.g. ABC Concrete" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="commitment-amount">Amount ($) *</label>
+                            <input type="number" id="commitment-amount" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="commitment-status">Status</label>
+                            <select id="commitment-status">
+                                <option value="Open">Open</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Closed">Closed</option>
+                                <option value="Void">Void</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="commitment-costcode">Cost Code *</label>
+                            <select id="commitment-costcode" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="commitment-bucket">Cost Bucket *</label>
+                            <select id="commitment-bucket" required></select>
+                        </div>
+                    </div>
+                    <div id="commitment-bucket-info" style="display:none;margin:10px 0;padding:8px 12px;background:var(--bg-light);border-radius:6px;font-size:12px;gap:16px;">
+                        <span><strong>Budget:</strong> <span id="cmt-budget-display">$0</span></span>
+                        <span><strong>Actual:</strong> <span id="cmt-actual-display">$0</span></span>
+                        <span><strong>Committed:</strong> <span id="cmt-committed-display">$0</span></span>
+                    </div>
+                    <div id="commitment-msg" class="settings-msg"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="commitment-cancel">Cancel</button>
+                        <button type="submit" class="btn-primary">Save</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
